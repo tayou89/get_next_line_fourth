@@ -6,11 +6,11 @@
 /*   By: tayou <tayou@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/27 05:42:51 by tayou             #+#    #+#             */
-/*   Updated: 2023/01/29 14:29:39 by tayou            ###   ########.fr       */
+/*   Updated: 2023/01/29 14:06:59 by tayou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 static char	*get_buf_readsize(char *buf, char *backup, int *read_size, int fd)
 {
@@ -109,29 +109,29 @@ static char	*renewal_backup(char *backup)
 
 char	*get_next_line(int fd)
 {
-	static char	*backup;
+	static char	*backup[OPEN_MAX];
 	char		*buf;
 	char		*line;
 	int			read_size;
 
-	if (fd < 0 || BUFFER_SIZE < 1)
+	if (fd < 0 || BUFFER_SIZE < 1 || fd > OPEN_MAX)
 		return (NULL);
 	buf = NULL;
 	line = NULL;
 	read_size = 0;
-	buf = get_buf_readsize(buf, backup, &read_size, fd);
-	if (read_size == -1 && backup != NULL)
+	buf = get_buf_readsize(buf, backup[fd], &read_size, fd);
+	if (read_size == -1 && backup[fd] != NULL)
 	{
-		free(backup);
-		backup = NULL;
+		free(backup[fd]);
+		backup[fd] = NULL;
 		return (NULL);
 	}
-	backup = get_backup(buf, backup, read_size, fd);
+	backup[fd] = get_backup(buf, backup[fd], read_size, fd);
 	free(buf);
 	buf = NULL;
-	if (backup == NULL)
+	if (backup[fd] == NULL)
 		return (NULL);
-	line = get_line(line, backup);
-	backup = renewal_backup(backup);
+	line = get_line(line, backup[fd]);
+	backup[fd] = renewal_backup(backup[fd]);
 	return (line);
 }

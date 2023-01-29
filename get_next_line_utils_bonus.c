@@ -6,11 +6,11 @@
 /*   By: tayou <tayou@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/28 13:59:24 by tayou             #+#    #+#             */
-/*   Updated: 2023/01/29 14:16:02 by tayou            ###   ########.fr       */
+/*   Updated: 2023/01/29 14:07:08 by tayou            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 int	ft_strlen(char *string)
 {
